@@ -188,3 +188,22 @@ ul.check{padding-left:18px} ul.check li{margin:.5rem 0}
 .comment .who{font-weight:600}
 .comment .meta{color:#64748b;font-size:.9rem}
 
+
+
+/* === Modal Services === */
+.modal{position:fixed;inset:0;z-index:70;display:block}
+.modal[hidden]{display:none}
+.modal-backdrop{position:absolute;inset:0;background:rgba(2,6,23,.5);backdrop-filter:saturate(140%) blur(2px)}
+.modal-panel{position:relative;z-index:1;max-width:980px;margin:48px auto;background:#fff;border-radius:18px;box-shadow:0 40px 120px rgba(2,6,23,.25);padding:28px}
+.modal-close{position:absolute;top:10px;right:12px;border:none;background:#eef2ff;color:#1f2937;font-size:20px;width:36px;height:36px;border-radius:999px;cursor:pointer}
+.modal-head{display:flex;gap:14px;align-items:center;margin-bottom:6px}
+.modal-icon{font-size:28px}
+.modal-title{font-size:24px;font-weight:800}
+.modal-body{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin:14px 0 10px}
+.modal-body ul{padding-left:18px;margin:8px 0}
+.modal-foot{display:flex;gap:12px;flex-wrap:wrap;justify-content:flex-end;margin-top:6px}
+@media (max-width: 860px){
+  .modal-panel{margin:24px 14px;padding:18px}
+  .modal-body{grid-template-columns:1fr}
+}
+

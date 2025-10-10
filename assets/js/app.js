@@ -3,7 +3,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const $  = (s, r=document) => r.querySelector(s);
   const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
-  const enc = (s)=>encodeURIComponent(s).replace(/%20/g,'+');
+  const enc = (s)=>encodeURIComponent(s);
 
   /* Footer year */
   const y = $('#year'); if (y) y.textContent = new Date().getFullYear();
@@ -240,6 +240,47 @@ ${msg}`;
       mm.addEventListener('click', (e)=>{ if(e.target.closest('[data-close]') || e.target.classList.contains('mobile-backdrop')) close(); });
       document.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && !mm.hidden) close(); });
     }
+  })();
+
+  /* ==================== MODALE SERVICE ==================== */
+  (function(){
+    const modal   = document.getElementById('service-modal'); if(!modal) return;
+    const titleEl = document.getElementById('sm-title');
+    const descEl  = document.getElementById('sm-desc');
+    const iconEl  = document.getElementById('sm-icon');
+    const bulletsEl = document.getElementById('sm-bullets');
+    const exTEl   = document.getElementById('sm-ex-title');
+    const exDEl   = document.getElementById('sm-ex-desc');
+
+    function open(d){
+      iconEl.textContent = d.icon || '💡';
+      titleEl.textContent = d.title || 'Service';
+      descEl.textContent  = d.desc  || '';
+      bulletsEl.innerHTML = (d.bullets||[]).map(b=>`<li>${b}</li>`).join('');
+      exTEl.textContent   = d.exTitle || '';
+      exDEl.textContent   = d.exDesc  || '';
+      modal.hidden=false; document.body.style.overflow='hidden';
+    }
+    function close(){ modal.hidden=true; document.body.style.overflow=''; }
+
+    modal.addEventListener('click', (e)=>{
+      if (e.target.closest('[data-close]') || e.target.classList.contains('modal-backdrop')) close();
+    });
+    modal.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click', ()=>close()));
+
+    document.querySelectorAll('#services [data-service]').forEach(card=>{
+      const data = {
+        title: card.getAttribute('data-title'),
+        icon:  card.getAttribute('data-icon'),
+        desc:  card.getAttribute('data-desc'),
+        bullets: (card.getAttribute('data-bullets')||'').split('|').filter(Boolean),
+        exTitle: card.getAttribute('data-ex-title'),
+        exDesc:  card.getAttribute('data-ex-desc'),
+      };
+      const openIt = (e)=>{ e.preventDefault(); open(data); };
+      card.addEventListener('click', openIt);
+      card.addEventListener('keydown', (e)=>{ if(e.key==='Enter'||e.key===' '){ openIt(e);} });
+    });
   })();
 
 });
