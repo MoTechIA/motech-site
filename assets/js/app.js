@@ -284,3 +284,101 @@ ${msg}`;
   })();
 
 });
+
+/* ===== MENU BURGER (auto-montage + logique) ===== */
+(function(){
+  document.addEventListener('DOMContentLoaded', function(){
+    const siteHeader = document.querySelector('header');
+    if(!siteHeader) return;
+
+    // 1) Bouton burger (créé si absent)
+    let burger = document.getElementById('menu-toggle');
+    if(!burger){
+      burger = document.createElement('button');
+      burger.id = 'menu-toggle';
+      burger.type = 'button';
+      burger.setAttribute('aria-label','Ouvrir le menu');
+      burger.innerHTML = '☰';
+      // on place le bouton à la fin du header (à côté du CTA)
+      siteHeader.appendChild(burger);
+    }
+
+    // 2) Construire le drawer + overlay si absents
+    let overlay = document.querySelector('.mobile-overlay');
+    let drawer  = document.querySelector('.mobile-drawer');
+    if(!overlay){
+      overlay = document.createElement('div');
+      overlay.className = 'mobile-overlay';
+      document.body.appendChild(overlay);
+    }
+    if(!drawer){
+      drawer = document.createElement('aside');
+      drawer.className = 'mobile-drawer';
+      drawer.setAttribute('role','dialog');
+      drawer.setAttribute('aria-modal','true');
+
+      // Récupère les liens existants du header
+      const desktopLinks = Array.from(document.querySelectorAll('header nav a'));
+      const nav = document.createElement('nav');
+      if(desktopLinks.length){
+        desktopLinks.forEach(a=>{
+          const link = document.createElement('a');
+          link.href = a.getAttribute('href') || '#';
+          link.textContent = a.textContent.trim();
+          nav.appendChild(link);
+        });
+      }else{
+        // fallback si nav introuvable
+        ['#home|Accueil','#services|Services','#about|À propos','#contact-rdv|Prendre RDV'].forEach(s=>{
+          const [h,t] = s.split('|');
+          const link = document.createElement('a'); link.href=h; link.textContent=t; nav.appendChild(link);
+        });
+      }
+
+      // Titre + bouton fermer
+      const head = document.createElement('header');
+      const title = document.createElement('div');
+      title.style.fontWeight='800'; title.style.fontSize='18px';
+      title.textContent = 'Menu';
+      const closeBtn = document.createElement('button');
+      closeBtn.type='button';
+      closeBtn.className='btn-close';
+      closeBtn.textContent='✕';
+      closeBtn.style.fontSize='20px';
+      closeBtn.style.background='none';
+      closeBtn.style.border='none';
+      closeBtn.style.cursor='pointer';
+      head.appendChild(title); head.appendChild(closeBtn);
+
+      // CTA principal
+      const cta = document.createElement('a');
+      cta.href = '#contact-rdv';
+      cta.className = 'cta';
+      cta.textContent = 'Prendre RDV';
+
+      drawer.appendChild(head);
+      drawer.appendChild(nav);
+      drawer.appendChild(cta);
+      document.body.appendChild(drawer);
+
+      // Fermeture
+      const close = () => { document.body.classList.remove('mobile-open'); burger.setAttribute('aria-expanded','false'); };
+      closeBtn.addEventListener('click', close);
+      overlay.addEventListener('click', close);
+      nav.querySelectorAll('a').forEach(a=>a.addEventListener('click', close));
+      cta.addEventListener('click', close);
+      window.addEventListener('keydown', (e)=>{ if(e.key==='Escape') close(); });
+
+      // Ouverture
+      const open = () => { document.body.classList.add('mobile-open'); burger.setAttribute('aria-expanded','true'); };
+      burger.addEventListener('click', ()=>{
+        if(document.body.classList.contains('mobile-open')) {
+          document.body.classList.remove('mobile-open');
+          burger.setAttribute('aria-expanded','false');
+        }else{
+          open();
+        }
+      });
+    }
+  });
+})();
