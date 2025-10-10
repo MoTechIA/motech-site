@@ -13,14 +13,13 @@
   <div class="container nav">
     <a class="logo" href="#hero"><span class="logo-mark">M</span><span class="logo-text">MoTech</span></a>
 
-    <!-- Bouton burger (affiché < 900px) -->
+    <!-- Burger desktop/tablette (caché en mobile car header caché) -->
     <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-controls="mobile-menu" aria-expanded="false">
       <span class="burger-bar"></span>
       <span class="burger-bar"></span>
       <span class="burger-bar"></span>
     </button>
 
-    <!-- Menu desktop -->
     <nav class="menu">
       <a href="#hero">Accueil</a>
       <a href="#services">Services</a>
@@ -43,6 +42,9 @@
     </nav>
   </div>
 </header>
+
+<!-- ✅ FAB menu visible uniquement sur mobile (header caché) -->
+<button class="fab-menu" id="fabMenu" aria-label="Menu" aria-controls="mobile-menu" aria-expanded="false">☰</button>
 
 <main>
   <!-- HERO -->

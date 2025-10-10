@@ -109,3 +109,25 @@ ul.check{padding-left:18px} ul.check li{margin:.5rem 0}
 .mobile-close{position:absolute;top:10px;right:10px;border:1px solid var(--border);background:#fff;border-radius:10px;padding:6px 10px}
 @keyframes slideIn{from{transform:translateX(10px);opacity:0}to{transform:translateX(0);opacity:1}}
 
+
+
+/* === Mobile header off + FAB === */
+.fab-menu{
+  display:none; position:fixed; right:16px; bottom:18px; z-index:80;
+  width:56px; height:56px; border-radius:999px; border:1px solid var(--border);
+  background:linear-gradient(90deg,var(--primary),var(--accent)); color:#fff;
+  font-size:22px; box-shadow:0 10px 24px rgba(2,6,23,.25);
+}
+@media (max-width:700px){
+  .site-header{ display:none }
+  .fab-menu{ display:inline-flex; align-items:center; justify-content:center }
+  h1{ font-size:44px }
+  .baseline{ font-size:18px }
+  .chip{ padding:10px 14px; font-size:16px }
+}
+
+/* Renforce la règle précédente pour cacher la barre desktop quand c'est serré */
+@media (max-width:900px){
+  .menu{ display:none !important }
+}
+

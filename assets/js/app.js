@@ -213,3 +213,17 @@ ${msg}`;
   document.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && !mm.hidden) close(); });
 })();
 
+/* === FAB menu (mobile) === */
+(function(){
+  const btn = document.getElementById('fabMenu');
+  const mm  = document.getElementById('mobile-menu');
+  if(!btn || !mm) return;
+  const panel = mm.querySelector('.mobile-panel');
+  function open(){ mm.hidden=false; btn.setAttribute('aria-expanded','true'); document.body.style.overflow='hidden'; (panel.querySelector('a,button')||panel).focus(); }
+  function close(){ mm.hidden=true; btn.setAttribute('aria-expanded','false'); document.body.style.overflow=''; }
+  btn.addEventListener('click', ()=>{ (mm.hidden?open:close)(); });
+  mm.addEventListener('click', (e)=>{ if(e.target.closest('[data-close]') || e.target.classList.contains('mobile-backdrop')) close(); });
+  mm.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click', ()=>close()));
+  document.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && !mm.hidden) close(); });
+})();
+
