@@ -4,31 +4,26 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>MoTech — Solutions Tech & IA pour Particuliers et PME</title>
-  <meta name="description" content="MoTech : applications web rapides, automatisations, IA appliquée, et tableaux de bord pour particuliers et PME." />
-  <meta property="og:title" content="MoTech — Solutions Tech & IA" />
-  <meta property="og:description" content="Apps web, automatisations, IA appliquée, dashboards." />
-  <meta property="og:type" content="website" />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Crect rx=%2212%22 width=%2764%27 height=%2764%27 fill=%27%234f46e5%27/%3E%3Ctext x=%2732%27 y=%2739%27 font-size=%2732%27 text-anchor=%27middle%27 fill=%27white%27 font-family=%27Inter,Arial%27%3EM%3C/text%3E%3C/svg%3E"/>
+  <meta name="description" content="Apps web rapides, automatisations, IA appliquée et tableaux de bord pour particuliers et PME." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Crect rx=%2214%22 width=%2764%27 height=%2764%27 fill=%27%234f46e5%27/%3E%3Ctext x=%2732%27 y=%2739%27 font-size=%2732%27 text-anchor=%27middle%27 fill=%27white%27 font-family=%27Inter,Arial%27%3EM%3C/text%3E%3C/svg%3E">
   <link rel="stylesheet" href="assets/css/styles.css" />
 </head>
 <body>
-<header class="site-header" role="banner">
+<header class="site-header">
   <div class="container nav">
-    <a class="logo" href="#hero" aria-label="Retour à l’accueil">
-      <span class="logo-mark">M</span><span class="logo-text">MoTech</span>
-    </a>
-    <nav class="menu" role="navigation" aria-label="Navigation principale">
+    <a class="logo" href="#hero"><span class="logo-mark">M</span><span class="logo-text">MoTech</span></a>
+    <nav class="menu">
       <a href="#hero">Accueil</a>
       <a href="#services">Services</a>
       <a href="#about">À propos</a>
-      <a href="#contact">Contact</a>
-      <!-- data-mailto assure l’ouverture mail -->
-      <a href="#rdv" class="btn btn-primary" data-mailto="true">Prendre RDV</a>
+      <a href="#contact-rdv">Contact</a>
+      <a href="#contact-rdv" class="btn btn-primary prendre-rdv">Prendre RDV</a>
     </nav>
   </div>
 </header>
 
 <main>
+  <!-- HERO -->
   <section id="hero" class="hero section">
     <div class="container">
       <div class="hero-badge"><span class="logo-mark">M</span> Studio dev & IA</div>
@@ -44,61 +39,81 @@
 
       <div class="hero-ctas">
         <a class="btn btn-primary" href="#services">Découvrir mes services</a>
-        <a class="btn btn-outline" href="#rdv" data-mailto="true">Prendre RDV</a>
+        <a class="btn btn-outline prendre-rdv" href="#contact-rdv">Prendre RDV</a>
       </div>
     </div>
   </section>
 
+  <!-- SERVICES -->
   <section id="services" class="services section">
     <div class="container">
       <h2>Services</h2>
       <div class="grid">
-        <article class="card" tabindex="0" data-service="true"
-                 data-title="Applications Web"
-                 data-img="assets/icons/icon-web.svg"
-                 data-caption="Logo Applications Web"
-                 data-desc="Sites et applications web rapides, SEO-friendly, responsive."
-                 data-bullets="Design system léger|Formulaires accessibles|Déploiement simple|Suivi webperf">
+        <!-- 1 -->
+        <article class="card" tabindex="0"
+          data-service
+          data-title="Applications Web"
+          data-icon="🌐"
+          data-desc="Sites & applications web modernes, rapides et SEO-friendly. Stack légère, accessibilité et performances en priorité."
+          data-bullets="Design system réutilisable|Formulaires accessibles|Auth & rôles|Intégration paiement/Stripe|Déploiement simple (Pages/Netlify)"
+          data-ex-title="Portail client — Artisan BTP"
+          data-ex-desc="Vitrine + espace client (devis, suivi chantier). Résultat : +42% de prises de contact qualifiées en 2 mois.">
           <div class="card-icon">🌐</div>
           <h3>Applications Web</h3>
           <p>Sites & apps vitrines, back-office, portails clients.</p>
         </article>
-        <article class="card" tabindex="0" data-service="true"
-                 data-title="Apps internes PME"
-                 data-img="assets/icons/icon-pme.svg"
-                 data-caption="Logo Apps internes PME"
-                 data-desc="Outils internes sur mesure pour fluidifier vos process."
-                 data-bullets="Portail employés|Permissions & rôles|Exports CSV/Sheets|Reporting">
+
+        <!-- 2 -->
+        <article class="card" tabindex="0"
+          data-service
+          data-title="Apps internes PME"
+          data-icon="🏢"
+          data-desc="Outils internes sur mesure pour fluidifier les process et rendre l’information accessible."
+          data-bullets="Portail employés|Permissions & rôles|Workflow validations|Exports CSV/Sheets|Reporting mensuel"
+          data-ex-title="Intranet — PME logistique"
+          data-ex-desc="Gestion entrées/sorties & planning — 4h/sem gagnées par équipe.">
           <div class="card-icon">🏢</div>
           <h3>Apps internes PME</h3>
           <p>Intranet, gestion, automatisations orientées métier.</p>
         </article>
-        <article class="card" tabindex="0" data-service="true"
-                 data-title="Automatisations"
-                 data-img="assets/icons/icon-auto.svg"
-                 data-caption="Logo Automatisations"
-                 data-desc="Automatiser les tâches répétitives via Make/Zapier + scripts."
-                 data-bullets="Connecteurs SaaS|Webhooks/API|Monitoring & alertes|ROI rapide">
+
+        <!-- 3 -->
+        <article class="card" tabindex="0"
+          data-service
+          data-title="Automatisations"
+          data-icon="⚙️"
+          data-desc="Automatiser les tâches répétitives avec Make/Zapier + scripts dédiés. Moins d’erreurs, plus de temps utile."
+          data-bullets="Connecteurs SaaS|Webhooks/API|Nettoyage de données|Alertes Slack/Email|Archivage auto"
+          data-ex-title="Sync CRM ↔ Facturation"
+          data-ex-desc="Création auto de factures + relances — DSO réduit de 17 jours.">
           <div class="card-icon">⚙️</div>
           <h3>Automatisations</h3>
           <p>Connecteurs SaaS + scripts dédiés.</p>
         </article>
-        <article class="card" tabindex="0" data-service="true"
-                 data-title="IA appliquée"
-                 data-img="assets/icons/icon-ai.svg"
-                 data-caption="Logo IA appliquée"
-                 data-desc="IA pragmatique et responsable sur des cas concrets."
-                 data-bullets="Assistants métier|Extraction|Synthèses|Garde-fous & privacy">
+
+        <!-- 4 -->
+        <article class="card" tabindex="0"
+          data-service
+          data-title="IA appliquée"
+          data-icon="🤖"
+          data-desc="IA pragmatique et responsable pour assister vos équipes, extraire/synthétiser de l’information."
+          data-bullets="Assistants métier|Extraction PDF/Docs|Synthèses|Recherche sémantique (RAG)|Garde-fous & privacy"
+          data-ex-title="Assistant SAV"
+          data-ex-desc="Propositions de réponses + liens vers KB interne — temps de traitement -32%.">
           <div class="card-icon">🤖</div>
           <h3>IA appliquée</h3>
           <p>Assistants, RAG, extraction/synthèse.</p>
         </article>
-        <article class="card" tabindex="0" data-service="true"
-                 data-title="Tableaux de bord"
-                 data-img="assets/icons/icon-dash.svg"
-                 data-caption="Logo Tableaux de bord"
-                 data-desc="KPIs clairs & actionnables multi-sources."
-                 data-bullets="Connecteurs API|Mises à jour auto|Filtres|Exports/PDF">
+
+        <!-- 5 -->
+        <article class="card" tabindex="0"
+          data-service
+          data-title="Tableaux de bord"
+          data-icon="📊"
+          data-desc="KPIs clairs et actionnables à partir de vos sources (Sheets, Notion, CRM, API…)."
+          data-bullets="Connecteurs multi-sources|Mises à jour auto|Filtres & drill-down|Exports PDF|Partage sécurisé"
+          data-ex-title="Dashboard ventes"
+          data-ex-desc="Suivi hebdo avec alertes objectifs — prévisions +15% plus fiables.">
           <div class="card-icon">📊</div>
           <h3>Tableaux de bord</h3>
           <p>Visualisations utiles pour décider vite.</p>
@@ -107,164 +122,140 @@
     </div>
   </section>
 
+  <!-- À PROPOS -->
   <section id="about" class="about section">
     <div class="container">
       <h2>À propos</h2>
       <div class="about-grid">
-        <div class="about-media">
-          <img src="assets/img/PHOTO.jpg" alt="PDG MoTech — photo" width="640" height="640" loading="lazy" class="about-photo"/>
-        </div>
+        <img class="about-photo" src="assets/img/PHOTO.jpg" alt="PDG MoTech — photo" width="640" height="640" loading="lazy">
         <div>
-          <p>Bonjour, je suis le <strong>créateur de MoTech</strong>. J’aide particuliers et PME à concevoir des <em>applications web rapides</em>, à <em>automatiser</em> leurs process et à <em>appliquer l’IA</em> de manière utile et responsable.</p>
+          <p>Je conçois des <strong>apps web utiles</strong>, j’<strong>automatise</strong> vos process et j’<strong>applique l’IA</strong> de manière responsable.</p>
           <ul class="check">
-            <li>Approche orientée valeur : livraisons courtes, itérations visibles.</li>
-            <li>Tech sobre : performances, accessibilité, SEO & confidentialité.</li>
+            <li>Livraisons courtes, itérations visibles.</li>
+            <li>Performance, accessibilité, SEO & confidentialité.</li>
             <li>Intégrations pragmatiques : APIs, Sheets/Notion, Make/Zapier, scripts dédiés.</li>
           </ul>
           <div class="about-ctas">
-            <a class="btn btn-primary" href="#rdv" data-mailto="true">Prendre RDV</a>
-            <a class="btn btn-outline" href="#contact">Me contacter</a>
+            <a class="btn btn-primary prendre-rdv" href="#contact-rdv">Prendre RDV</a>
+            <a class="btn btn-outline" href="#contact-rdv">Me contacter</a>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="contact" class="contact section">
+  <!-- CONTACT + RDV (section unique) -->
+  <section id="contact-rdv" class="contact section">
     <div class="container">
-      <h2>Contact</h2>
-      <form id="contact-form" class="form" action="#" method="post" novalidate>
-        <label>Nom
-          <input id="name" name="name" type="text" required />
-        </label>
-        <label>Email
-          <input id="email" name="email" type="email" required />
-        </label>
-        <label>Message
-          <textarea id="message" name="message" rows="5" required></textarea>
-        </label>
-        <div class="actions">
-          <button type="submit" class="btn btn-primary">Envoyer</button>
-          <p class="form-status" aria-live="polite"></p>
-        </div>
-      </form>
-
-      <!-- Laisser un commentaire -->
-      <div class="comments">
-        <h3>Laisser un commentaire</h3>
-        <form id="comment-form" class="form" novalidate>
-          <div class="grid-2">
-            <label>Votre nom
-              <input id="c-name" type="text" required />
-            </label>
-            <label>Entreprise (optionnel)
-              <input id="c-company" type="text" />
-            </label>
-          </div>
-          <label>Commentaire
-            <textarea id="c-text" rows="3" required></textarea>
-          </label>
-          <div class="actions">
-            <button type="submit" class="btn btn-outline">Publier</button>
-            <p class="form-status" id="c-status" aria-live="polite"></p>
-          </div>
-        </form>
-
-        <div class="comments-list" id="comments-list" aria-live="polite"></div>
-      </div>
-    </div>
-  </section>
-
-  <section id="rdv" class="rdv section">
-    <div class="container">
-      <h2>Prendre RDV</h2>
-      <p>Choisissez un créneau (lun–ven, 11h–21h). Sinon, contactez-moi par email.</p>
-
-      <div class="slots-wrap">
-        <p class="muted">Sélectionnez une date ouvrée (lun–ven). Des créneaux de 30 min s’affichent automatiquement.</p>
-        <div id="slots" class="slots" aria-live="polite"></div>
-        <p class="slots-hint muted" id="slots-hint" hidden>Aucun créneau disponible ce jour-là.</p>
-      </div>
-
-      <form id="rdv-form" class="form" action="#" method="post" novalidate>
+      <h2>Contact & RDV</h2>
+      <form id="contact-rdv-form" class="form" action="#" method="post" novalidate>
         <div class="grid-2">
           <label>Nom
-            <input id="rdv-name" name="name" type="text" required />
+            <input id="cr-name" name="name" type="text" required />
           </label>
           <label>Email
-            <input id="rdv-email" name="email" type="email" required />
+            <input id="cr-email" name="email" type="email" required />
           </label>
         </div>
-        <div class="grid-2">
-          <label>Date
-            <input id="rdv-date" name="date" type="date" required />
-          </label>
-          <label>Heure (11:00–21:00)
-            <input id="rdv-time" name="time" type="time" min="11:00" max="21:00" required />
-          </label>
-        </div>
-        <label>Notes (optionnel)
-          <textarea id="rdv-notes" name="notes" rows="3"></textarea>
+
+        <label>Message
+          <textarea id="cr-message" name="message" rows="4" required></textarea>
         </label>
+
+        <label class="switch">
+          <input type="checkbox" id="cr-want-rdv" />
+          <span>Je souhaite réserver un créneau de RDV</span>
+        </label>
+
+        <div id="cr-rdv-fields" class="rdv-fields" hidden>
+          <div class="grid-2">
+            <label>Date
+              <input id="cr-date" name="date" type="date" />
+            </label>
+            <label>Heure (11:00–21:00)
+              <input id="cr-time" name="time" type="time" min="11:00" max="21:00" />
+            </label>
+          </div>
+          <div class="slots-wrap">
+            <p class="muted">Créneaux 30 min — lun-ven, 11h–21h.</p>
+            <div id="cr-slots" class="slots" aria-live="polite"></div>
+            <p id="cr-slots-hint" class="muted" hidden>Aucun créneau disponible ce jour-là.</p>
+          </div>
+        </div>
+
         <div class="actions">
-          <button type="submit" class="btn btn-primary">Demander un RDV</button>
+          <button type="submit" class="btn btn-primary">Envoyer</button>
+          <button type="button" class="btn btn-outline prendre-rdv">Prendre RDV</button>
           <p class="form-status" aria-live="polite"></p>
         </div>
       </form>
+    </div>
+  </section>
+
+  <!-- COMMENTAIRES (en bas de page) -->
+  <section id="comments" class="section">
+    <div class="container">
+      <h2>Laisser un commentaire</h2>
+      <form id="comment-form" class="form" novalidate>
+        <div class="grid-2">
+          <label>Votre nom
+            <input id="c-name" type="text" required />
+          </label>
+          <label>Entreprise (optionnel)
+            <input id="c-company" type="text" />
+          </label>
+        </div>
+        <label>Commentaire
+          <textarea id="c-text" rows="3" required></textarea>
+        </label>
+        <div class="actions">
+          <button type="submit" class="btn btn-outline">Publier</button>
+          <p id="c-status" class="form-status" aria-live="polite"></p>
+        </div>
+      </form>
+      <div id="comments-list" class="comments-list" aria-live="polite"></div>
     </div>
   </section>
 </main>
 
-<!-- FOOTER restauré -->
+<!-- FOOTER -->
 <footer class="site-footer">
   <div class="container footer-grid">
-    <div class="foot-brand">
-      <span class="logo-mark">M</span> MoTech — Studio dev & IA
-    </div>
+    <div class="foot-brand"><span class="logo-mark">M</span> MoTech — Studio dev & IA</div>
     <nav class="foot-links">
       <a href="#services">Services</a>
       <a href="#about">À propos</a>
-      <a href="#contact">Contact</a>
-      <a href="#rdv" data-mailto="true">Prendre RDV</a>
+      <a href="#contact-rdv">Contact</a>
+      <a href="#contact-rdv" class="prendre-rdv">Prendre RDV</a>
     </nav>
     <p class="copy">© <span id="year"></span> MoTech — Tous droits réservés.</p>
   </div>
 </footer>
 
-<!-- Modale Services -->
-<div id="service-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="service-modal-title" aria-describedby="service-modal-desc" hidden>
+<!-- MODALE SERVICE -->
+<div id="service-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="sm-title" aria-describedby="sm-desc" hidden>
   <div class="modal-backdrop" data-close="true"></div>
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog">
     <button class="modal-close btn btn-outline" aria-label="Fermer" data-close="true">✕</button>
     <header class="modal-header">
-      <h3 id="service-modal-title">Détail du service</h3>
-      <p id="service-modal-desc" class="muted"></p>
+      <div class="modal-icon" id="sm-icon" aria-hidden="true">💡</div>
+      <div>
+        <h3 id="sm-title">Service</h3>
+        <p id="sm-desc" class="muted">Détail</p>
+      </div>
     </header>
     <div class="modal-body">
-      <figure class="modal-figure">
-        <img id="service-modal-img" src="" alt="" />
-        <figcaption id="service-modal-caption" class="muted"></figcaption>
-      </figure>
-      <div id="service-modal-content" class="modal-content"></div>
+      <ul id="sm-bullets" class="ul-bullets"></ul>
+      <div class="example">
+        <h4>Exemple client</h4>
+        <p id="sm-ex-title" class="ex-title"></p>
+        <p id="sm-ex-desc" class="muted"></p>
+      </div>
     </div>
     <footer class="modal-footer">
-      <a class="btn btn-primary" href="#contact" data-close="true">Me contacter</a>
-      <a class="btn btn-outline" href="#rdv" data-close="true" data-mailto="true">Prendre RDV</a>
+      <a class="btn btn-primary prendre-rdv" href="#contact-rdv" data-close="true">Prendre RDV</a>
+      <a class="btn btn-outline" href="#contact-rdv" data-close="true">Me contacter</a>
     </footer>
-  </div>
-</div>
-
-<!-- Pop-up auto -->
-<div id="auto-pop" class="auto-pop" role="dialog" aria-modal="true" aria-labelledby="auto-pop-title" hidden>
-  <div class="auto-pop-backdrop" data-close="true"></div>
-  <div class="auto-pop-box" role="document">
-    <button class="auto-pop-close" aria-label="Fermer" data-close="true">✕</button>
-    <h3 id="auto-pop-title">Diagnostic gratuit de 15 min</h3>
-    <p class="muted">Parlez-moi de votre besoin (app, automatisation, IA). Je vous donne une piste concrète.</p>
-    <div class="auto-pop-actions">
-      <a class="btn btn-primary" href="#rdv" data-close="true" data-mailto="true">Prendre RDV</a>
-      <a class="btn btn-outline" href="#contact" data-close="true">Me contacter</a>
-    </div>
   </div>
 </div>
 
