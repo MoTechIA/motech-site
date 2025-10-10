@@ -1,13 +1,9 @@
-/* ====== MoTech - app.js (HYBRIDE comments: localStorage + auto-sync Pantry) ====== */
+/* ====== MoTech - app.js (100% interne) ====== */
 
 document.addEventListener('DOMContentLoaded', () => {
   const $  = (s, r=document) => r.querySelector(s);
   const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
   const enc = (s)=>encodeURIComponent(s).replace(/%20/g,'+');
-
-  const PANTRY = (window.MOTECH_PANTRY_ID || '').trim();
-  const COMMENTS_URL = PANTRY ? `https://getpantry.cloud/apiv1/pantry/${PANTRY}/basket/comments` : '';
-  const LS_KEY = 'motech_comments_queue';
 
   /* Footer year */
   const y = $('#year'); if (y) y.textContent = new Date().getFullYear();
@@ -65,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   })();
 
-  /* ==================== CONTACT + RDV (mailto multi-fournisseur) ==================== */
+  /* ==================== CONTACT + RDV (mailto local) ==================== */
   (function(){
     const form = $('#contact-rdv-form'); if(!form) return;
     const status = $('.form-status', form);
@@ -95,26 +91,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }}}
     dateI?.addEventListener('change', ()=> buildSlots(dateI.value));
 
-    function providerFrom(email){
-      const m = String(email||'').toLowerCase().match(/@([^@]+)$/); const d = m ? m[1] : '';
-      if (/(gmail\.com|googlemail\.com)$/.test(d))
-        return (to,s,b)=>`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(to)}&su=${encodeURIComponent(s)}&body=${encodeURIComponent(b)}`;
-      if (/(outlook\.com|hotmail\.com|live\.com|msn\.com)$/.test(d))
-        return (to,s,b)=>`https://outlook.live.com/mail/0/deeplink/compose?to=${encodeURIComponent(to)}&subject=${encodeURIComponent(s)}&body=${encodeURIComponent(b)}`;
-      if (/(yahoo\.[a-z]+)$/.test(d))
-        return (to,s,b)=>`https://compose.mail.yahoo.com/?to=${encodeURIComponent(to)}&subject=${encodeURIComponent(s)}&body=${encodeURIComponent(b)}`;
-      if (/(proton\.me|protonmail\.com)$/.test(d))
-        return ()=>`https://mail.proton.me/u/0/inbox`;
-      return null;
-    }
-    function openEmail(to, subject, body, from=''){
+    function openEmail(to, subject, body){
       const mailtoURL = `mailto:${to}?subject=${enc(subject)}&body=${enc(body)}`;
       window.location.href = mailtoURL;
-      const composer = providerFrom(from);
-      if (composer){
-        const t = setTimeout(()=>{ const url = composer(to, subject, body); if(url) window.open(url,'_blank','noopener'); }, 900);
-        window.addEventListener('pagehide', ()=>clearTimeout(t), {once:true});
-      }
     }
 
     form.addEventListener('submit', (e)=>{
@@ -125,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const okEmail=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
       if(!name||!okEmail||!msg){ status.textContent='Champs invalides.'; return; }
 
-      const to = window.MOTECH_MAILTO || 'contact@example.com';
+      const to = 'contact.workings@gmail.com';
       let subject = `Contact MoTech — ${name}`;
       let body = `Contact :
 
@@ -152,155 +131,85 @@ ${msg}`;
       }
 
       status.textContent='Ouverture de votre client mail…';
-      openEmail(to, subject, body, email);
+      openEmail(to, subject, body);
     });
   })();
 
-  /* ==================== RATING via CountAPI ==================== */
+  /* ==================== AVIS & COMMENTAIRES (note validée à la soumission) ==================== */
   (function(){
-    const starsWrap = $('#rating-stars'); if(!starsWrap) return;
-    const avgEl = $('#rating-avg'), countEl = $('#rating-count');
+    const list    = $('#comments-list');
+    const form    = $('#comment-form');
+    const status  = $('#c-status');
+    const starsUI = $$('#rating-stars .star');
+    const avgEl   = $('#rating-avg');
+    const countEl = $('#rating-count');
+    const LS_KEY  = 'motech_comments';
 
-    const NS = 'motech-site';
-    const KEY_COUNT = 'rating_count';
-    const KEY_SUM   = 'rating_sum';
-    const api = (path)=>fetch(`https://api.countapi.xyz/${path}`).then(r=>r.json());
+    let currentRating = 0; // note sélectionnée par l'utilisateur
 
-    async function refresh(){
-      const [c,s] = await Promise.all([
-        api(`get/${NS}/${KEY_COUNT}`).catch(()=>({value:0})),
-        api(`get/${NS}/${KEY_SUM}`).catch(()=>({value:0}))
-      ]);
-      const count = Number(c.value||0), sum = Number(s.value||0);
-      const avg = count ? (sum/count).toFixed(2) : '–';
-      if (avgEl)   avgEl.textContent = avg;
-      if (countEl) countEl.textContent = count;
-    }
-
-    async function vote(v){
-      await Promise.all([
-        api(`update/${NS}/${KEY_COUNT}/?amount=1`),
-        api(`update/${NS}/${KEY_SUM}/?amount=${v}`)
-      ]);
-      highlight(v); refresh();
-    }
-
-    function highlight(v){
-      const stars = $$('.star', starsWrap);
-      stars.forEach((b,i)=> b.classList.toggle('active', i < v));
-    }
-
-    starsWrap.addEventListener('click', (e)=>{
-      const btn = e.target.closest('.star'); if(!btn) return;
-      const v = Number(btn.dataset.value||0); if(!v) return;
-      vote(v);
-    });
-
-    refresh();
-  })();
-
-  /* ==================== COMMENTAIRES HYBRIDES ==================== */
-  (function(){
-    const list   = $('#comments-list');
-    const form   = $('#comment-form');
-    const status = $('#c-status');
-
-    function lsGet(){
-      try{ return JSON.parse(localStorage.getItem(LS_KEY)||'[]'); } catch(e){ return []; }
-    }
-    function lsSet(arr){
-      try{ localStorage.setItem(LS_KEY, JSON.stringify(arr)); }catch(e){}
-    }
-
-    async function fetchPantry(){
-      if(!COMMENTS_URL) throw new Error('no pantry');
-      const r = await fetch(COMMENTS_URL, {cache:'no-store'});
-      if(!r.ok) throw new Error('pantry fetch');
-      const data = await r.json();
-      return Array.isArray(data.items)? data.items : [];
-    }
-    async function savePantry(items){
-      if(!COMMENTS_URL) throw new Error('no pantry');
-      const r = await fetch(COMMENTS_URL, {
-        method:'PUT',
-        headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({items})
-      });
-      if(!r.ok) throw new Error('pantry save');
-      return true;
-    }
+    function lsGet(){ try{ return JSON.parse(localStorage.getItem(LS_KEY)||'[]'); } catch(e){ return []; } }
+    function lsSet(arr){ localStorage.setItem(LS_KEY, JSON.stringify(arr)); }
 
     function render(items){
-      if(!list) return;
       list.innerHTML = items.slice().reverse().map(c=>`
         <div class="comment">
           <div class="who">${c.name || 'Anonyme'} ${c.company?`• <span class="meta">${c.company}</span>`:''}</div>
-          <div class="meta">${new Date(c.date||Date.now()).toLocaleString()}</div>
+          <div class="meta">${new Date(c.date).toLocaleString()}</div>
+          <div class="stars-display">${'★'.repeat(c.rating)}${'☆'.repeat(5-c.rating)}</div>
           <p>${(c.text||'').replace(/</g,'&lt;')}</p>
         </div>
       `).join('') || '<p class="muted">Aucun commentaire pour le moment.</p>';
     }
 
-    async function initialLoad(){
-      const local = lsGet();
-      render(local); // afficher instantanément
-      if (!COMMENTS_URL) { return; } // pas de Pantry → mode local seulement
-      try{
-        const remote = await fetchPantry();
-        // Merge: on ajoute les locaux absents du remote
-        const key = c => `${(c.date||'')}-${(c.name||'')}-${(c.text||'').slice(0,20)}`;
-        const rSet = new Set(remote.map(key));
-        const merged = remote.concat(local.filter(c=>!rSet.has(key(c))));
-        render(merged);
-        lsSet(merged);
-        // si on a ajouté du local au merged, push vers pantry
-        if (merged.length !== remote.length){
-          try{ await savePantry(merged); }catch(e){}
-        }
-      }catch(e){
-        // Pantry KO → on reste en local
-      }
-    }
-
-    async function addComment(item){
-      const cur = lsGet();
-      cur.push(item);
-      lsSet(cur);
-      render(cur);
-
-      if (COMMENTS_URL){
-        try{
-          // tenter un merge remote + local et sauver
-          const remote = await fetchPantry().catch(()=>[]);
-          const key = c => `${(c.date||'')}-${(c.name||'')}-${(c.text||'').slice(0,20)}`;
-          const rSet = new Set(remote.map(key));
-          const merged = remote.concat(cur.filter(c=>!rSet.has(key(c))));
-          await savePantry(merged);
-          lsSet(merged);
-          render(merged);
-        }catch(e){
-          // laisser en local, un prochain visiteur re-syncera
-        }
-      }
+    function refreshStats(){
+      const items = lsGet();
+      if(!items.length){ avgEl.textContent='–'; countEl.textContent='0'; return; }
+      const sum = items.reduce((a,c)=> a + (c.rating||0), 0);
+      const avg = (sum / items.length).toFixed(1);
+      avgEl.textContent = avg;
+      countEl.textContent = String(items.length);
     }
 
     // init
-    initialLoad();
+    render(lsGet());
+    refreshStats();
 
-    // submit
-    form?.addEventListener('submit', async (e)=>{
+    // Sélection d'étoiles (orange)
+    function paintStars(n){
+      starsUI.forEach(s=>{
+        const v = Number(s.dataset.value||0);
+        s.classList.toggle('active', v <= n);
+      });
+    }
+    starsUI.forEach(s=>{
+      s.addEventListener('click', ()=>{
+        currentRating = Number(s.dataset.value||0);
+        paintStars(currentRating);
+      });
+    });
+
+    // Soumission commentaire + note
+    form?.addEventListener('submit', (e)=>{
       e.preventDefault();
       const name = $('#c-name')?.value.trim() || 'Anonyme';
       const company = $('#c-company')?.value.trim() || '';
       const text = $('#c-text')?.value.trim() || '';
-      if(!text){ status.textContent='Écris un commentaire.'; return; }
+      if(!currentRating || !text){
+        status.textContent = 'Sélectionne une note et écris un commentaire.'; 
+        return;
+      }
       status.textContent='Publication…';
-      await addComment({name, company, text, date: new Date().toISOString()});
+      const cur = lsGet();
+      cur.push({name, company, text, rating: currentRating, date: new Date().toISOString()});
+      lsSet(cur);
+      render(cur);
+      refreshStats();
+      // reset
       form.reset();
-      status.textContent='Merci !';
+      currentRating = 0; paintStars(0);
+      status.textContent='Merci pour votre avis !';
       setTimeout(()=>status.textContent='', 1500);
     });
-
   })();
 
   /* === Burger === */

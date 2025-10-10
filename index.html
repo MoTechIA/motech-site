@@ -7,22 +7,14 @@
   <meta name="description" content="Apps web rapides, automatisations, IA appliquée et tableaux de bord pour particuliers et PME." />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Crect rx=%2214%22 width=%2764%27 height=%2764%27 fill=%27%234f46e5%27/%3E%3Ctext x=%2732%27 y=%2739%27 font-size=%2732%27 text-anchor=%27middle%27 fill=%27white%27 font-family=%27Inter,Arial%27%3EM%3C/text%3E%3C/svg%3E">
   <link rel="stylesheet" href="assets/css/styles.css" />
-
-<script>
-  window.MOTECH_PANTRY_ID = ""; /* vide = mode local */
-</script>
 </head>
 <body>
 <header class="site-header">
   <div class="container nav">
     <a class="logo" href="#hero"><span class="logo-mark">M</span><span class="logo-text">MoTech</span></a>
-
     <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-controls="mobile-menu" aria-expanded="false">
-      <span class="burger-bar"></span>
-      <span class="burger-bar"></span>
-      <span class="burger-bar"></span>
+      <span class="burger-bar"></span><span class="burger-bar"></span><span class="burger-bar"></span>
     </button>
-
     <nav class="menu">
       <a href="#hero">Accueil</a>
       <a href="#services">Services</a>
@@ -74,69 +66,49 @@
     <div class="container">
       <h2>Services</h2>
       <div class="grid">
-        <article class="card" tabindex="0"
-          data-service
-          data-title="Applications Web"
-          data-icon="🌐"
+        <article class="card" tabindex="0" data-service
+          data-title="Applications Web" data-icon="🌐"
           data-desc="Sites & applications web modernes, rapides et SEO-friendly. Stack légère, accessibilité et performances en priorité."
           data-bullets="Design system réutilisable|Formulaires accessibles|Auth & rôles|Intégration paiement/Stripe|Déploiement simple (Pages/Netlify)"
           data-ex-title="Portail client — Artisan BTP"
           data-ex-desc="Vitrine + espace client (devis, suivi chantier). Résultat : +42% de prises de contact qualifiées en 2 mois.">
-          <div class="card-icon">🌐</div>
-          <h3>Applications Web</h3>
-          <p>Sites & apps vitrines, back-office, portails clients.</p>
+          <div class="card-icon">🌐</div><h3>Applications Web</h3><p>Sites & apps vitrines, back-office, portails clients.</p>
         </article>
 
-        <article class="card" tabindex="0"
-          data-service
-          data-title="Apps internes PME"
-          data-icon="🏢"
+        <article class="card" tabindex="0" data-service
+          data-title="Apps internes PME" data-icon="🏢"
           data-desc="Outils internes sur mesure pour fluidifier les process et rendre l’information accessible."
           data-bullets="Portail employés|Permissions & rôles|Workflow validations|Exports CSV/Sheets|Reporting mensuel"
           data-ex-title="Intranet — PME logistique"
           data-ex-desc="Gestion entrées/sorties & planning — 4h/sem gagnées par équipe.">
-          <div class="card-icon">🏢</div>
-          <h3>Apps internes PME</h3>
-          <p>Intranet, gestion, automatisations orientées métier.</p>
+          <div class="card-icon">🏢</div><h3>Apps internes PME</h3><p>Intranet, gestion, automatisations orientées métier.</p>
         </article>
 
-        <article class="card" tabindex="0"
-          data-service
-          data-title="Automatisations"
-          data-icon="⚙️"
+        <article class="card" tabindex="0" data-service
+          data-title="Automatisations" data-icon="⚙️"
           data-desc="Automatiser les tâches répétitives avec Make/Zapier + scripts dédiés. Moins d’erreurs, plus de temps utile."
           data-bullets="Connecteurs SaaS|Webhooks/API|Nettoyage de données|Alertes Slack/Email|Archivage auto"
           data-ex-title="Sync CRM ↔ Facturation"
           data-ex-desc="Création auto de factures + relances — DSO réduit de 17 jours.">
-          <div class="card-icon">⚙️</div>
-          <h3>Automatisations</h3>
-          <p>Connecteurs SaaS + scripts dédiés.</p>
+          <div class="card-icon">⚙️</div><h3>Automatisations</h3><p>Connecteurs SaaS + scripts dédiés.</p>
         </article>
 
-        <article class="card" tabindex="0"
-          data-service
-          data-title="IA appliquée"
-          data-icon="🤖"
+        <article class="card" tabindex="0" data-service
+          data-title="IA appliquée" data-icon="🤖"
           data-desc="IA pragmatique et responsable pour assister vos équipes, extraire/synthétiser de l’information."
           data-bullets="Assistants métier|Extraction PDF/Docs|Synthèses|Recherche sémantique (RAG)|Garde-fous & privacy"
           data-ex-title="Assistant SAV"
           data-ex-desc="Propositions de réponses + liens vers KB interne — temps de traitement -32%.">
-          <div class="card-icon">🤖</div>
-          <h3>IA appliquée</h3>
-          <p>Assistants, RAG, extraction/synthèse.</p>
+          <div class="card-icon">🤖</div><h3>IA appliquée</h3><p>Assistants, RAG, extraction/synthèse.</p>
         </article>
 
-        <article class="card" tabindex="0"
-          data-service
-          data-title="Tableaux de bord"
-          data-icon="📊"
+        <article class="card" tabindex="0" data-service
+          data-title="Tableaux de bord" data-icon="📊"
           data-desc="KPIs clairs et actionnables à partir de vos sources (Sheets, Notion, CRM, API…)."
           data-bullets="Connecteurs multi-sources|Mises à jour auto|Filtres & drill-down|Exports PDF|Partage sécurisé"
           data-ex-title="Dashboard ventes"
           data-ex-desc="Suivi hebdo avec alertes objectifs — prévisions +15% plus fiables.">
-          <div class="card-icon">📊</div>
-          <h3>Tableaux de bord</h3>
-          <p>Visualisations utiles pour décider vite.</p>
+          <div class="card-icon">📊</div><h3>Tableaux de bord</h3><p>Visualisations utiles pour décider vite.</p>
         </article>
       </div>
     </div>
@@ -170,31 +142,15 @@
       <h2>Contact & RDV</h2>
       <form id="contact-rdv-form" class="form" action="#" method="post" novalidate>
         <div class="grid-2">
-          <label>Nom
-            <input id="cr-name" name="name" type="text" required />
-          </label>
-          <label>Email
-            <input id="cr-email" name="email" type="email" required />
-          </label>
+          <label>Nom <input id="cr-name" name="name" type="text" required /></label>
+          <label>Email <input id="cr-email" name="email" type="email" required /></label>
         </div>
-
-        <label>Message
-          <textarea id="cr-message" name="message" rows="4" required></textarea>
-        </label>
-
-        <label class="switch">
-          <input type="checkbox" id="cr-want-rdv" />
-          <span>Je souhaite réserver un créneau de RDV</span>
-        </label>
-
+        <label>Message <textarea id="cr-message" name="message" rows="4" required></textarea></label>
+        <label class="switch"><input type="checkbox" id="cr-want-rdv" /><span>Je souhaite réserver un créneau de RDV</span></label>
         <div id="cr-rdv-fields" class="rdv-fields" hidden>
           <div class="grid-2">
-            <label>Date
-              <input id="cr-date" name="date" type="date" />
-            </label>
-            <label>Heure (11:00–21:00)
-              <input id="cr-time" name="time" type="time" min="11:00" max="21:00" />
-            </label>
+            <label>Date <input id="cr-date" name="date" type="date" /></label>
+            <label>Heure (11:00–21:00) <input id="cr-time" name="time" type="time" min="11:00" max="21:00" /></label>
           </div>
           <div class="slots-wrap">
             <p class="muted">Créneaux 30 min — lun-ven, 11h–21h.</p>
@@ -202,7 +158,6 @@
             <p id="cr-slots-hint" class="muted" hidden>Aucun créneau disponible ce jour-là.</p>
           </div>
         </div>
-
         <div class="actions">
           <button type="submit" class="btn btn-primary">Envoyer</button>
           <button type="button" class="btn btn-outline prendre-rdv">Prendre RDV</button>
@@ -212,12 +167,11 @@
     </div>
   </section>
 
-  <!-- COMMENTAIRES & AVIS -->
+  <!-- AVIS & COMMENTAIRES (100% interne) -->
   <section id="comments" class="section">
     <div class="container">
       <h2>Avis & commentaires</h2>
 
-      <!-- ⭐ NOTE MOYENNE -->
       <div class="rating-wrap">
         <div class="rating-row">
           <div id="rating-stars" class="stars" role="radiogroup" aria-label="Noter MoTech">
@@ -227,36 +181,24 @@
             <button class="star" aria-label="4 étoiles" data-value="4">★</button>
             <button class="star" aria-label="5 étoiles" data-value="5">★</button>
           </div>
-          <div class="rating-meta">
-            <strong id="rating-avg">–</strong> / 5 • <span id="rating-count">0</span> avis
-          </div>
+          <div class="rating-meta"><strong id="rating-avg">–</strong> / 5 • <span id="rating-count">0</span> avis</div>
         </div>
-        <p class="muted">Cliquez pour noter. La moyenne est synchronisée mondialement (CountAPI).</p>
+        <p class="muted">La note est stockée dans votre navigateur (localStorage).</p>
       </div>
 
-      <!-- 💬 Commentaires (GitHub Issues via Utterances) -->
-      <div class="comment-widget">
-        <script src="https://utteranc.es/client.js"
-                repo="MoTechIA/motech-site"
-                issue-term="pathname"
-                theme="github-light"
-                crossorigin="anonymous"
-                async>
-        </script>
-      </div>
+      <form id="comment-form" class="form" novalidate>
+        <div class="grid-2">
+          <label>Votre nom <input id="c-name" type="text" required /></label>
+          <label>Entreprise (optionnel) <input id="c-company" type="text" /></label>
+        </div>
+        <label>Commentaire <textarea id="c-text" rows="3" required></textarea></label>
+        <div class="actions">
+          <button type="submit" class="btn btn-outline">Publier</button>
+          <p id="c-status" class="form-status" aria-live="polite"></p>
+        </div>
+      </form>
 
-      <!-- 🟢 Avis Google (lien + iframe placeholder) -->
-      <div class="google-reviews">
-        <h3>Avis Google</h3>
-        <p>
-          <a id="google-review-link" class="btn btn-outline" target="_blank" rel="noopener">Laisser un avis sur Google</a>
-          <a id="google-reviews-link" class="btn" target="_blank" rel="noopener">Voir nos avis Google</a>
-        </p>
-        <!-- Remplacez GOOGLE_PLACE_EMBED_URL par l'URL d’intégration de votre fiche -->
-        <iframe id="google-embed" title="Avis Google" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-                style="width:100%;height:420px;border:1px solid var(--border);border-radius:14px;background:#fff"
-                src="about:blank"></iframe>
-      </div>
+      <div id="comments-list" class="comments-list" aria-live="polite"></div>
     </div>
   </section>
 </main>
@@ -281,18 +223,11 @@
     <button class="modal-close btn btn-outline" aria-label="Fermer" data-close="true">✕</button>
     <header class="modal-header">
       <div class="modal-icon" id="sm-icon" aria-hidden="true">💡</div>
-      <div>
-        <h3 id="sm-title">Service</h3>
-        <p id="sm-desc" class="muted">Détail</p>
-      </div>
+      <div><h3 id="sm-title">Service</h3><p id="sm-desc" class="muted">Détail</p></div>
     </header>
     <div class="modal-body">
       <ul id="sm-bullets" class="ul-bullets"></ul>
-      <div class="example">
-        <h4>Exemple client</h4>
-        <p id="sm-ex-title" class="ex-title"></p>
-        <p id="sm-ex-desc" class="muted"></p>
-      </div>
+      <div class="example"><h4>Exemple client</h4><p id="sm-ex-title" class="ex-title"></p><p id="sm-ex-desc" class="muted"></p></div>
     </div>
     <footer class="modal-footer">
       <a class="btn btn-primary prendre-rdv" href="#contact-rdv" data-close="true">Prendre RDV</a>
@@ -301,12 +236,6 @@
   </div>
 </div>
 
-<script>
-  /* ➜ Configurez ici vos URLs Google (facultatif) */
-  window.MOTECH_GOOGLE_REVIEW_URL = "https://search.google.com/local/writereview?placeid=VOTRE_PLACE_ID";
-  window.MOTECH_GOOGLE_REVIEWS_URL = "https://maps.google.com/?cid=VOTRE_CID"; /* lien vers la fiche */
-  window.MOTECH_GOOGLE_EMBED_URL = ""; /* URL d'embed si vous en avez une, sinon laissez vide */
-</script>
 <script src="assets/js/app.js" defer></script>
 </body>
 </html>
