@@ -578,3 +578,98 @@ ${msg}`;
     ensureBurgerReady();
   }
 })();
+
+/* === FIX: repositionner le burger et enlever tout style "bottom" laissé par d'anciens CSS === */
+(function(){
+  const ready = () => {
+    // Supprime les doublons éventuels du bouton
+    const toggles = Array.from(document.querySelectorAll('#menu-toggle'));
+    if (toggles.length > 1) {
+      toggles.slice(1).forEach(n => n.remove());
+    }
+    let burger = document.getElementById('menu-toggle');
+    if (!burger) {
+      burger = document.createElement('button');
+      burger.id = 'menu-toggle';
+      burger.type = 'button';
+      burger.setAttribute('aria-label','Ouvrir le menu');
+      burger.textContent = '☰';
+      document.body.appendChild(burger);
+    }
+
+    // Nettoyage des styles inline qui le collent en bas
+    ['bottom','left','transform'].forEach(k => { try { burger.style[k] = ''; } catch(e){} });
+    burger.style.top   = '12px';
+    burger.style.right = '12px';
+    burger.style.position = 'fixed';
+    burger.style.zIndex = '10000';
+
+    // S'assurer que le drawer et l’overlay existent et que les événements fonctionnent
+    let overlay = document.querySelector('.mobile-overlay');
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.className = 'mobile-overlay';
+      document.body.appendChild(overlay);
+    }
+    let drawer = document.querySelector('.mobile-drawer');
+    if (!drawer) {
+      drawer = document.createElement('aside');
+      drawer.className = 'mobile-drawer';
+      drawer.setAttribute('role','dialog');
+      drawer.setAttribute('aria-modal','true');
+
+      const head = document.createElement('header');
+      const title = document.createElement('div');
+      title.textContent = 'Menu';
+      title.style.fontWeight='800'; title.style.fontSize='18px';
+      const closeBtn = document.createElement('button');
+      closeBtn.type='button'; closeBtn.textContent='✕';
+      closeBtn.style.cssText='font-size:20px;background:none;border:none;cursor:pointer;';
+      head.appendChild(title); head.appendChild(closeBtn);
+
+      const nav = document.createElement('nav');
+      const desktopLinks = Array.from(document.querySelectorAll('header nav a'));
+      if (desktopLinks.length){
+        desktopLinks.forEach(a=>{
+          const l=document.createElement('a');
+          l.href=a.getAttribute('href')||'#'; l.textContent=a.textContent.trim();
+          nav.appendChild(l);
+        });
+      } else {
+        ['#home|Accueil','#services|Services','#about|À propos','#contact-rdv|Prendre RDV'].forEach(s=>{
+          const [h,t]=s.split('|'); const a=document.createElement('a'); a.href=h; a.textContent=t; nav.appendChild(a);
+        });
+      }
+      const cta=document.createElement('a'); cta.href='#contact-rdv'; cta.className='cta'; cta.textContent='Prendre RDV';
+
+      drawer.appendChild(head); drawer.appendChild(nav); drawer.appendChild(cta);
+      document.body.appendChild(drawer);
+
+      const close = ()=>{ document.body.classList.remove('mobile-open'); burger.setAttribute('aria-expanded','false'); };
+      closeBtn.addEventListener('click', close);
+      overlay.addEventListener('click', close);
+      nav.querySelectorAll('a').forEach(a=>a.addEventListener('click', close));
+      cta.addEventListener('click', close);
+      window.addEventListener('keydown', e=>{ if(e.key==='Escape') close(); });
+
+      burger.addEventListener('click', ()=>{
+        const opened = document.body.classList.toggle('mobile-open');
+        burger.setAttribute('aria-expanded', opened ? 'true' : 'false');
+      });
+    } else {
+      const close = ()=>{ document.body.classList.remove('mobile-open'); burger.setAttribute('aria-expanded','false'); };
+      overlay.addEventListener('click', close);
+      drawer.querySelectorAll('nav a,.cta').forEach(a=>a.addEventListener('click', close));
+      burger.onclick = ()=>{
+        const opened = document.body.classList.toggle('mobile-open');
+        burger.setAttribute('aria-expanded', opened ? 'true' : 'false');
+      };
+    }
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', ready);
+  } else {
+    ready();
+  }
+})();

@@ -398,3 +398,16 @@ ul.check{padding-left:18px} ul.check li{margin:.5rem 0}
   .mobile-overlay{ z-index: 119 !important; }
   .mobile-drawer{ padding-top: calc(env(safe-area-inset-top, 0px) + 18px); }
 }
+
+/* === OVERRIDE: burger mobile toujours en haut-droite === */
+@media (max-width:980px){
+  #menu-toggle{
+    position:fixed !important;
+    top: calc(env(safe-area-inset-top, 0px) + 12px) !important;
+    right: 12px !important;
+    bottom: auto !important;
+    left: auto !important;
+    transform: none !important;
+    z-index: 10000 !important; /* au-dessus des autres bulles */
+  }
+}
