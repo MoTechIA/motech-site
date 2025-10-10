@@ -480,3 +480,101 @@ ${msg}`;
     }
   });
 })();
+
+/* ===== FIX MOBILE BURGER — position + événements ===== */
+(function(){
+  const ensureBurgerReady = () => {
+    // Supprimer doublons si jamais (#menu-toggle multiples)
+    const toggles = Array.from(document.querySelectorAll('#menu-toggle'));
+    if (toggles.length > 1) {
+      toggles.slice(1).forEach(n => n.remove());
+    }
+    let burger = document.getElementById('menu-toggle');
+    if (!burger) {
+      // créer si absent
+      burger = document.createElement('button');
+      burger.id = 'menu-toggle';
+      burger.type = 'button';
+      burger.setAttribute('aria-label','Ouvrir le menu');
+      burger.textContent = '☰';
+      burger.style.display = 'none'; // sera visible via CSS mobile
+      document.body.appendChild(burger);
+    } else {
+      // s'assurer qu'il est bien dans <body> (pas perdu en bas de page)
+      if (burger.parentElement !== document.body) {
+        document.body.appendChild(burger);
+      }
+    }
+
+    // Overlay + Drawer
+    let overlay = document.querySelector('.mobile-overlay');
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.className = 'mobile-overlay';
+      document.body.appendChild(overlay);
+    }
+    let drawer = document.querySelector('.mobile-drawer');
+    if (!drawer) {
+      drawer = document.createElement('aside');
+      drawer.className = 'mobile-drawer';
+      drawer.setAttribute('role','dialog');
+      drawer.setAttribute('aria-modal','true');
+
+      const head = document.createElement('header');
+      const title = document.createElement('div');
+      title.textContent = 'Menu';
+      title.style.fontWeight='800'; title.style.fontSize='18px';
+      const closeBtn = document.createElement('button');
+      closeBtn.type='button'; closeBtn.textContent='✕';
+      closeBtn.style.cssText='font-size:20px;background:none;border:none;cursor:pointer;';
+      head.appendChild(title); head.appendChild(closeBtn);
+
+      const nav = document.createElement('nav');
+      const desktopLinks = Array.from(document.querySelectorAll('header nav a'));
+      if (desktopLinks.length) {
+        desktopLinks.forEach(a => {
+          const link = document.createElement('a');
+          link.href = a.getAttribute('href') || '#';
+          link.textContent = a.textContent.trim();
+          nav.appendChild(link);
+        });
+      } else {
+        ['#home|Accueil','#services|Services','#about|À propos','#contact-rdv|Prendre RDV'].forEach(s=>{
+          const [h,t]=s.split('|'); const a=document.createElement('a'); a.href=h; a.textContent=t; nav.appendChild(a);
+        });
+      }
+      const cta = document.createElement('a');
+      cta.href='#contact-rdv'; cta.className='cta'; cta.textContent='Prendre RDV';
+
+      drawer.appendChild(head); drawer.appendChild(nav); drawer.appendChild(cta);
+      document.body.appendChild(drawer);
+
+      const close = ()=>{ document.body.classList.remove('mobile-open'); burger.setAttribute('aria-expanded','false'); };
+      closeBtn.addEventListener('click', close);
+      overlay.addEventListener('click', close);
+      nav.querySelectorAll('a').forEach(a=>a.addEventListener('click', close));
+      cta.addEventListener('click', close);
+      window.addEventListener('keydown', e=>{ if(e.key==='Escape') close(); });
+
+      burger.addEventListener('click', ()=>{
+        const opened = document.body.classList.toggle('mobile-open');
+        burger.setAttribute('aria-expanded', opened ? 'true' : 'false');
+      });
+    } else {
+      // Drawer existe déjà → rebind sécurisés
+      const close = ()=>{ document.body.classList.remove('mobile-open'); burger.setAttribute('aria-expanded','false'); };
+      overlay.addEventListener('click', close);
+      drawer.querySelectorAll('nav a,.cta').forEach(a=>a.addEventListener('click', close));
+      burger.onclick = ()=>{
+        const opened = document.body.classList.toggle('mobile-open');
+        burger.setAttribute('aria-expanded', opened ? 'true' : 'false');
+      };
+    }
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', ensureBurgerReady);
+  } else {
+    ensureBurgerReady();
+  }
+})();
