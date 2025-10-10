@@ -131,3 +131,16 @@ ul.check{padding-left:18px} ul.check li{margin:.5rem 0}
   .menu{ display:none !important }
 }
 
+
+
+/* === Rating stars === */
+.rating-wrap{margin:6px 0 18px}
+.rating-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.stars{display:inline-flex;gap:6px}
+.star{font-size:28px;line-height:1;border:none;background:transparent;cursor:pointer;color:#d1d5db;transition:transform .1s}
+.star:hover{transform:scale(1.06)}
+.star.active,.star.active ~ .star{color:#d1d5db} /* prevent cascade */
+.star.active{color:#f59e0b}
+.rating-meta{color:#334155}
+.google-reviews h3{margin:14px 0 6px}
+

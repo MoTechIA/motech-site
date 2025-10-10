@@ -7,13 +7,16 @@
   <meta name="description" content="Apps web rapides, automatisations, IA appliquée et tableaux de bord pour particuliers et PME." />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Crect rx=%2214%22 width=%2764%27 height=%2764%27 fill=%27%234f46e5%27/%3E%3Ctext x=%2732%27 y=%2739%27 font-size=%2732%27 text-anchor=%27middle%27 fill=%27white%27 font-family=%27Inter,Arial%27%3EM%3C/text%3E%3C/svg%3E">
   <link rel="stylesheet" href="assets/css/styles.css" />
+
+<script>
+  window.MOTECH_PANTRY_ID = ""; /* vide = mode local */
+</script>
 </head>
 <body>
 <header class="site-header">
   <div class="container nav">
     <a class="logo" href="#hero"><span class="logo-mark">M</span><span class="logo-text">MoTech</span></a>
 
-    <!-- Burger desktop/tablette (caché en mobile car header caché) -->
     <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-controls="mobile-menu" aria-expanded="false">
       <span class="burger-bar"></span>
       <span class="burger-bar"></span>
@@ -29,7 +32,6 @@
     </nav>
   </div>
 
-  <!-- Menu mobile (panneau) -->
   <div class="mobile-menu" id="mobile-menu" hidden>
     <div class="mobile-backdrop" data-close="true"></div>
     <nav class="mobile-panel" role="dialog" aria-label="Navigation mobile">
@@ -43,7 +45,6 @@
   </div>
 </header>
 
-<!-- ✅ FAB menu visible uniquement sur mobile (header caché) -->
 <button class="fab-menu" id="fabMenu" aria-label="Menu" aria-controls="mobile-menu" aria-expanded="false">☰</button>
 
 <main>
@@ -211,28 +212,51 @@
     </div>
   </section>
 
-  <!-- COMMENTAIRES -->
+  <!-- COMMENTAIRES & AVIS -->
   <section id="comments" class="section">
     <div class="container">
-      <h2>Laisser un commentaire</h2>
-      <form id="comment-form" class="form" novalidate>
-        <div class="grid-2">
-          <label>Votre nom
-            <input id="c-name" type="text" required />
-          </label>
-          <label>Entreprise (optionnel)
-            <input id="c-company" type="text" />
-          </label>
+      <h2>Avis & commentaires</h2>
+
+      <!-- ⭐ NOTE MOYENNE -->
+      <div class="rating-wrap">
+        <div class="rating-row">
+          <div id="rating-stars" class="stars" role="radiogroup" aria-label="Noter MoTech">
+            <button class="star" aria-label="1 étoile" data-value="1">★</button>
+            <button class="star" aria-label="2 étoiles" data-value="2">★</button>
+            <button class="star" aria-label="3 étoiles" data-value="3">★</button>
+            <button class="star" aria-label="4 étoiles" data-value="4">★</button>
+            <button class="star" aria-label="5 étoiles" data-value="5">★</button>
+          </div>
+          <div class="rating-meta">
+            <strong id="rating-avg">–</strong> / 5 • <span id="rating-count">0</span> avis
+          </div>
         </div>
-        <label>Commentaire
-          <textarea id="c-text" rows="3" required></textarea>
-        </label>
-        <div class="actions">
-          <button type="submit" class="btn btn-outline">Publier</button>
-          <p id="c-status" class="form-status" aria-live="polite"></p>
-        </div>
-      </form>
-      <div id="comments-list" class="comments-list" aria-live="polite"></div>
+        <p class="muted">Cliquez pour noter. La moyenne est synchronisée mondialement (CountAPI).</p>
+      </div>
+
+      <!-- 💬 Commentaires (GitHub Issues via Utterances) -->
+      <div class="comment-widget">
+        <script src="https://utteranc.es/client.js"
+                repo="MoTechIA/motech-site"
+                issue-term="pathname"
+                theme="github-light"
+                crossorigin="anonymous"
+                async>
+        </script>
+      </div>
+
+      <!-- 🟢 Avis Google (lien + iframe placeholder) -->
+      <div class="google-reviews">
+        <h3>Avis Google</h3>
+        <p>
+          <a id="google-review-link" class="btn btn-outline" target="_blank" rel="noopener">Laisser un avis sur Google</a>
+          <a id="google-reviews-link" class="btn" target="_blank" rel="noopener">Voir nos avis Google</a>
+        </p>
+        <!-- Remplacez GOOGLE_PLACE_EMBED_URL par l'URL d’intégration de votre fiche -->
+        <iframe id="google-embed" title="Avis Google" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+                style="width:100%;height:420px;border:1px solid var(--border);border-radius:14px;background:#fff"
+                src="about:blank"></iframe>
+      </div>
     </div>
   </section>
 </main>
@@ -277,6 +301,12 @@
   </div>
 </div>
 
+<script>
+  /* ➜ Configurez ici vos URLs Google (facultatif) */
+  window.MOTECH_GOOGLE_REVIEW_URL = "https://search.google.com/local/writereview?placeid=VOTRE_PLACE_ID";
+  window.MOTECH_GOOGLE_REVIEWS_URL = "https://maps.google.com/?cid=VOTRE_CID"; /* lien vers la fiche */
+  window.MOTECH_GOOGLE_EMBED_URL = ""; /* URL d'embed si vous en avez une, sinon laissez vide */
+</script>
 <script src="assets/js/app.js" defer></script>
 </body>
 </html>
