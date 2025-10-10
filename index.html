@@ -23,7 +23,6 @@
       <a href="#contact-rdv" class="btn btn-primary prendre-rdv">Prendre RDV</a>
     </nav>
   </div>
-
   <div class="mobile-menu" id="mobile-menu" hidden>
     <div class="mobile-backdrop" data-close="true"></div>
     <nav class="mobile-panel" role="dialog" aria-label="Navigation mobile">
@@ -36,7 +35,6 @@
     </nav>
   </div>
 </header>
-
 <button class="fab-menu" id="fabMenu" aria-label="Menu" aria-controls="mobile-menu" aria-expanded="false">☰</button>
 
 <main>
@@ -46,14 +44,12 @@
       <div class="hero-badge"><span class="logo-mark">M</span> Studio dev & IA</div>
       <h1>MoTech</h1>
       <p class="baseline">Solutions Tech & IA pour Particuliers et PME</p>
-
       <div class="hero-tags">
         <a class="chip" href="#services">Apps web rapides</a>
         <a class="chip" href="#services">Automatisations</a>
         <a class="chip" href="#services">IA appliquée</a>
         <a class="chip" href="#services">Tableaux de bord</a>
       </div>
-
       <div class="hero-ctas">
         <a class="btn btn-primary" href="#services">Découvrir mes services</a>
         <a class="btn btn-outline prendre-rdv" href="#contact-rdv">Prendre RDV</a>
@@ -167,11 +163,10 @@
     </div>
   </section>
 
-  <!-- AVIS & COMMENTAIRES (100% interne) -->
+  <!-- AVIS & COMMENTAIRES (Firestore) -->
   <section id="comments" class="section">
     <div class="container">
       <h2>Avis & commentaires</h2>
-
       <div class="rating-wrap">
         <div class="rating-row">
           <div id="rating-stars" class="stars" role="radiogroup" aria-label="Noter MoTech">
@@ -183,7 +178,7 @@
           </div>
           <div class="rating-meta"><strong id="rating-avg">–</strong> / 5 • <span id="rating-count">0</span> avis</div>
         </div>
-        <p class="muted">La note est stockée dans votre navigateur (localStorage).</p>
+        <p class="muted">Sélectionnez votre note puis publiez votre avis.</p>
       </div>
 
       <form id="comment-form" class="form" novalidate>
@@ -216,26 +211,12 @@
   </div>
 </footer>
 
-<!-- MODALE SERVICE -->
-<div id="service-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="sm-title" aria-describedby="sm-desc" hidden>
-  <div class="modal-backdrop" data-close="true"></div>
-  <div class="modal-dialog">
-    <button class="modal-close btn btn-outline" aria-label="Fermer" data-close="true">✕</button>
-    <header class="modal-header">
-      <div class="modal-icon" id="sm-icon" aria-hidden="true">💡</div>
-      <div><h3 id="sm-title">Service</h3><p id="sm-desc" class="muted">Détail</p></div>
-    </header>
-    <div class="modal-body">
-      <ul id="sm-bullets" class="ul-bullets"></ul>
-      <div class="example"><h4>Exemple client</h4><p id="sm-ex-title" class="ex-title"></p><p id="sm-ex-desc" class="muted"></p></div>
-    </div>
-    <footer class="modal-footer">
-      <a class="btn btn-primary prendre-rdv" href="#contact-rdv" data-close="true">Prendre RDV</a>
-      <a class="btn btn-outline" href="#contact-rdv" data-close="true">Me contacter</a>
-    </footer>
-  </div>
-</div>
+<!-- Firebase (compat) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="assets/js/firebase-config.js"></script>
 
+<!-- App -->
 <script src="assets/js/app.js" defer></script>
 </body>
 </html>

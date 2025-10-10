@@ -1,4 +1,4 @@
-/* ====== MoTech - app.js (100% interne) ====== */
+/* ====== MoTech - app.js (Firestore comments + étoiles) ====== */
 
 document.addEventListener('DOMContentLoaded', () => {
   const $  = (s, r=document) => r.querySelector(s);
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     el.addEventListener('click', (e)=>{ e.preventDefault(); flagRDV(); });
   });
 
-  /* ==================== MODALE SERVICE ==================== */
+  /* ===== Modale service ===== */
   (function(){
     const modal   = $('#service-modal'); if(!modal) return;
     const titleEl = $('#sm-title'),  descEl = $('#sm-desc');
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   })();
 
-  /* ==================== CONTACT + RDV (mailto local) ==================== */
+  /* ===== Contact + RDV (mailto) ===== */
   (function(){
     const form = $('#contact-rdv-form'); if(!form) return;
     const status = $('.form-status', form);
@@ -135,46 +135,23 @@ ${msg}`;
     });
   })();
 
-  /* ==================== AVIS & COMMENTAIRES (note validée à la soumission) ==================== */
+  /* ===== Avis & commentaires (Firestore) ===== */
   (function(){
+    // Init Firebase
+    if (!window.FIREBASE_CONFIG) { console.error('Firebase config manquante'); return; }
+    if (!window.firebase?.apps?.length) firebase.initializeApp(window.FIREBASE_CONFIG);
+    const db = firebase.firestore();
+    const ref = db.collection('comments');
+
     const list    = $('#comments-list');
     const form    = $('#comment-form');
     const status  = $('#c-status');
     const starsUI = $$('#rating-stars .star');
     const avgEl   = $('#rating-avg');
     const countEl = $('#rating-count');
-    const LS_KEY  = 'motech_comments';
 
-    let currentRating = 0; // note sélectionnée par l'utilisateur
+    let currentRating = 0;
 
-    function lsGet(){ try{ return JSON.parse(localStorage.getItem(LS_KEY)||'[]'); } catch(e){ return []; } }
-    function lsSet(arr){ localStorage.setItem(LS_KEY, JSON.stringify(arr)); }
-
-    function render(items){
-      list.innerHTML = items.slice().reverse().map(c=>`
-        <div class="comment">
-          <div class="who">${c.name || 'Anonyme'} ${c.company?`• <span class="meta">${c.company}</span>`:''}</div>
-          <div class="meta">${new Date(c.date).toLocaleString()}</div>
-          <div class="stars-display">${'★'.repeat(c.rating)}${'☆'.repeat(5-c.rating)}</div>
-          <p>${(c.text||'').replace(/</g,'&lt;')}</p>
-        </div>
-      `).join('') || '<p class="muted">Aucun commentaire pour le moment.</p>';
-    }
-
-    function refreshStats(){
-      const items = lsGet();
-      if(!items.length){ avgEl.textContent='–'; countEl.textContent='0'; return; }
-      const sum = items.reduce((a,c)=> a + (c.rating||0), 0);
-      const avg = (sum / items.length).toFixed(1);
-      avgEl.textContent = avg;
-      countEl.textContent = String(items.length);
-    }
-
-    // init
-    render(lsGet());
-    refreshStats();
-
-    // Sélection d'étoiles (orange)
     function paintStars(n){
       starsUI.forEach(s=>{
         const v = Number(s.dataset.value||0);
@@ -188,56 +165,81 @@ ${msg}`;
       });
     });
 
-    // Soumission commentaire + note
-    form?.addEventListener('submit', (e)=>{
+    function render(items){
+      list.innerHTML = items.map(c=>`
+        <div class="comment">
+          <div class="who">${(c.name||'Anonyme')} ${c.company?`• <span class="meta">${c.company}</span>`:''}</div>
+          <div class="meta">${c.createdAt ? c.createdAt.toDate().toLocaleString() : ''}</div>
+          <div class="stars-display">${'★'.repeat(c.rating||0)}${'☆'.repeat(5-(c.rating||0))}</div>
+          <p>${(c.text||'').replace(/</g,'&lt;')}</p>
+        </div>
+      `).join('') || '<p class="muted">Aucun commentaire pour le moment.</p>';
+    }
+    function refreshStats(items){
+      const count = items.length;
+      if(!count){ avgEl.textContent='–'; countEl.textContent='0'; return; }
+      const sum = items.reduce((a,c)=>a + (c.rating||0), 0);
+      const avg = (sum / count).toFixed(1);
+      avgEl.textContent = avg;
+      countEl.textContent = String(count);
+    }
+
+    // Live update (partagé mondialement)
+    ref.orderBy('createdAt', 'desc').onSnapshot(snap=>{
+      const items = snap.docs.map(d=>d.data());
+      render(items);
+      refreshStats(items);
+    });
+
+    // Soumission avis = note sélectionnée + commentaire
+    form?.addEventListener('submit', async (e)=>{
       e.preventDefault();
       const name = $('#c-name')?.value.trim() || 'Anonyme';
       const company = $('#c-company')?.value.trim() || '';
       const text = $('#c-text')?.value.trim() || '';
-      if(!currentRating || !text){
-        status.textContent = 'Sélectionne une note et écris un commentaire.'; 
-        return;
-      }
+      if (!currentRating || !text){ status.textContent='Sélectionne une note et écris un commentaire.'; return; }
+
       status.textContent='Publication…';
-      const cur = lsGet();
-      cur.push({name, company, text, rating: currentRating, date: new Date().toISOString()});
-      lsSet(cur);
-      render(cur);
-      refreshStats();
-      // reset
-      form.reset();
-      currentRating = 0; paintStars(0);
-      status.textContent='Merci pour votre avis !';
-      setTimeout(()=>status.textContent='', 1500);
+      try{
+        await ref.add({
+          name, company, text,
+          rating: currentRating,
+          userAgent: navigator.userAgent,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        form.reset();
+        currentRating = 0; paintStars(0);
+        status.textContent='Merci pour votre avis !';
+        setTimeout(()=>status.textContent='', 1500);
+      }catch(err){
+        console.error(err);
+        status.textContent='Erreur de publication.';
+      }
     });
   })();
 
-  /* === Burger === */
-  (function(){
+  /* === Burger & FAB === */
+  ;(function(){
     const btn = document.getElementById('burger');
     const mm  = document.getElementById('mobile-menu');
-    if(!btn || !mm) return;
-    const panel = mm.querySelector('.mobile-panel');
-    function open(){ mm.hidden=false; btn.setAttribute('aria-expanded','true'); document.body.style.overflow='hidden'; (panel.querySelector('a,button')||panel).focus(); }
-    function close(){ mm.hidden=true; btn.setAttribute('aria-expanded','false'); document.body.style.overflow=''; }
-    btn.addEventListener('click', ()=>{ (mm.hidden?open:close)(); });
-    mm.addEventListener('click', (e)=>{ if(e.target.closest('[data-close]') || e.target.classList.contains('mobile-backdrop')) close(); });
-    mm.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click', ()=>close()));
-    document.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && !mm.hidden) close(); });
-  })();
-
-  /* === FAB === */
-  (function(){
-    const btn = document.getElementById('fabMenu');
-    const mm  = document.getElementById('mobile-menu');
-    if(!btn || !mm) return;
-    const panel = mm.querySelector('.mobile-panel');
-    function open(){ mm.hidden=false; btn.setAttribute('aria-expanded','true'); document.body.style.overflow='hidden'; (panel.querySelector('a,button')||panel).focus(); }
-    function close(){ mm.hidden=true; btn.setAttribute('aria-expanded','false'); document.body.style.overflow=''; }
-    btn.addEventListener('click', ()=>{ (mm.hidden?open:close)(); });
-    mm.addEventListener('click', (e)=>{ if(e.target.closest('[data-close]') || e.target.classList.contains('mobile-backdrop')) close(); });
-    mm.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click', ()=>close()));
-    document.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && !mm.hidden) close(); });
+    if(btn && mm){
+      const panel = mm.querySelector('.mobile-panel');
+      const open = ()=>{ mm.hidden=false; btn.setAttribute('aria-expanded','true'); document.body.style.overflow='hidden'; (panel.querySelector('a,button')||panel).focus(); }
+      const close= ()=>{ mm.hidden=true; btn.setAttribute('aria-expanded','false'); document.body.style.overflow=''; }
+      btn.addEventListener('click', ()=>{ (mm.hidden?open:close)(); });
+      mm.addEventListener('click', (e)=>{ if(e.target.closest('[data-close]') || e.target.classList.contains('mobile-backdrop')) close(); });
+      mm.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click', ()=>close()));
+      document.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && !mm.hidden) close(); });
+    }
+    const fab = document.getElementById('fabMenu');
+    if(fab && mm){
+      const panel = mm.querySelector('.mobile-panel');
+      const open = ()=>{ mm.hidden=false; fab.setAttribute('aria-expanded','true'); document.body.style.overflow='hidden'; (panel.querySelector('a,button')||panel).focus(); }
+      const close= ()=>{ mm.hidden=true; fab.setAttribute('aria-expanded','false'); document.body.style.overflow=''; }
+      fab.addEventListener('click', ()=>{ (mm.hidden?open:close)(); });
+      mm.addEventListener('click', (e)=>{ if(e.target.closest('[data-close]') || e.target.classList.contains('mobile-backdrop')) close(); });
+      document.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && !mm.hidden) close(); });
+    }
   })();
 
 });

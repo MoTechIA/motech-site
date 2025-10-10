@@ -173,3 +173,18 @@ ul.check{padding-left:18px} ul.check li{margin:.5rem 0}
 .comment .who{font-weight:600}
 .comment .meta{color:#64748b;font-size:.9rem}
 
+
+
+/* === Avis & commentaires (partagé via Firestore) === */
+.rating-wrap{margin:6px 0 18px}
+.rating-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.stars{display:inline-flex;gap:6px}
+#rating-stars .star{font-size:28px;cursor:pointer;color:#d1d5db;line-height:1;border:none;background:transparent;transition:transform .1s}
+#rating-stars .star:hover{transform:scale(1.06)}
+#rating-stars .star.active{color:#f59e0b}
+.stars-display{font-size:18px;color:#f59e0b;margin:4px 0}
+.rating-meta{color:#334155}
+.comment{border:1px solid #e5e7eb;border-radius:14px;padding:14px;background:#fff;box-shadow:0 8px 24px rgba(2,6,23,.06);margin:10px 0}
+.comment .who{font-weight:600}
+.comment .meta{color:#64748b;font-size:.9rem}
+
