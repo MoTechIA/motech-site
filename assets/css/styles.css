@@ -86,3 +86,26 @@ ul.check{padding-left:18px} ul.check li{margin:.5rem 0}
 .modal-icon{font-size:28px}
 .ul-bullets{margin:0 0 14px 18px}
 .ex-title{font-weight:700}
+
+
+/* === Burger / Mobile menu === */
+.burger{display:none;gap:5px;flex-direction:column;justify-content:center;align-items:center;
+  width:42px;height:42px;border:1px solid var(--border);border-radius:10px;background:#fff;box-shadow:0 6px 18px rgba(2,6,23,.05)}
+.burger-bar{display:block;width:20px;height:2px;background:#0b1220}
+@media (max-width:900px){
+  .menu{display:none}
+  .burger{display:flex}
+}
+/* Panneau mobile */
+.mobile-menu[hidden]{display:none}
+.mobile-menu{position:fixed;inset:0;z-index:70}
+.mobile-backdrop{position:absolute;inset:0;background:rgba(15,23,42,.45);backdrop-filter:blur(2px)}
+.mobile-panel{
+  position:absolute;right:0;top:0;height:100%;width:min(88vw,360px);background:#fff;border-left:1px solid var(--border);
+  box-shadow:var(--shadow-xl);padding:18px;display:flex;flex-direction:column;gap:12px;animation:slideIn .18s ease;
+}
+.mobile-panel a{padding:12px 10px;border-radius:12px;text-decoration:none;color:var(--text);border:1px solid var(--border);background:#fff}
+.mobile-panel .btn{border-color:transparent}
+.mobile-close{position:absolute;top:10px;right:10px;border:1px solid var(--border);background:#fff;border-radius:10px;padding:6px 10px}
+@keyframes slideIn{from{transform:translateX(10px);opacity:0}to{transform:translateX(0);opacity:1}}
+
