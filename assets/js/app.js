@@ -685,3 +685,18 @@ ${msg}`;
     if (drawer) drawer.remove();
   });
 })();
+
+/* === OVERRIDE ANTI-BURGER (idempotent) === */
+(function(){
+  const removeBurgerBits = () => {
+    const ids = ['menu-toggle'];
+    ids.forEach(i=>{ const el=document.getElementById(i); if(el) el.remove(); });
+    document.querySelectorAll('.mobile-overlay,.mobile-drawer').forEach(n=>n.remove());
+    document.body.classList.remove('mobile-open');
+  };
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', removeBurgerBits);
+  } else {
+    removeBurgerBits();
+  }
+})();

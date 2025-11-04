@@ -430,3 +430,10 @@ ul.check{padding-left:18px} ul.check li{margin:.5rem 0}
     padding: 6px 10px;
   }
 }
+
+/* === OVERRIDE ANTI-BURGER (idempotent) === */
+#menu-toggle, .mobile-overlay, .mobile-drawer { display: none !important; }
+@media (max-width:980px){
+  header nav{ display:flex !important; flex-wrap:wrap; gap:8px; }
+  header nav a{ font-size:15px; padding:6px 10px; }
+}
