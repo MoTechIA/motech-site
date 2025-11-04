@@ -673,3 +673,15 @@ ${msg}`;
     ready();
   }
 })();
+
+/* === Suppression complète du menu burger (mobile) === */
+(function() {
+  document.addEventListener('DOMContentLoaded', function() {
+    const burger = document.getElementById('menu-toggle');
+    const overlay = document.querySelector('.mobile-overlay');
+    const drawer = document.querySelector('.mobile-drawer');
+    if (burger) burger.remove();
+    if (overlay) overlay.remove();
+    if (drawer) drawer.remove();
+  });
+})();
