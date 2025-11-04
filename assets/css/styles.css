@@ -437,3 +437,27 @@ ul.check{padding-left:18px} ul.check li{margin:.5rem 0}
   header nav{ display:flex !important; flex-wrap:wrap; gap:8px; }
   header nav a{ font-size:15px; padding:6px 10px; }
 }
+
+/* === KILL SWITCH burger flottant bas/droite (mobile) ======================== */
+@media (max-width: 980px){
+  /* sélecteurs explicites connus */
+  #menu-toggle,
+  .mobile-overlay,
+  .mobile-drawer,
+  .fab,
+  .menu-fab,
+  .burger-fab,
+  .floating-menu,
+  .fab-menu,
+  [data-burger],
+  [data-menu],
+  button[aria-label*="menu" i],
+  a[aria-label*="menu" i],
+  div[aria-label*="menu" i]{
+    display: none !important;
+  }
+  /* fallback générique: tout bouton flottant rond en bas à droite */
+  .fab-bottom-right{
+    display: none !important;
+  }
+}

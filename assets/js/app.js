@@ -700,3 +700,63 @@ ${msg}`;
     removeBurgerBits();
   }
 })();
+
+/* === KILL SWITCH dynamique du burger flottant =============================== */
+(function(){
+  function looksLikeFloatingBurger(el){
+    try{
+      const label = (el.getAttribute('aria-label')||'').toLowerCase();
+      const id    = (el.id||'').toLowerCase();
+      const cls   = (el.className ? el.className.toString() : '').toLowerCase();
+      if (/(menu|burger|nav|drawer)/.test(label+id+cls)) return true;
+
+      const cs = window.getComputedStyle(el);
+      if (cs.position !== 'fixed') return false;
+
+      const right  = parseFloat(cs.right)  || 0;
+      const bottom = parseFloat(cs.bottom) || 0;
+      const w = el.offsetWidth, h = el.offsetHeight;
+      const radius = cs.borderRadius || '';
+      const nearBottomRight = (right <= 42 && bottom <= 42);
+      const isRoundish = /50%|28px|32px|40px/i.test(radius);
+      const sizeOkay = (w >= 44 && w <= 120 && h >= 44 && h <= 120);
+
+      return nearBottomRight && isRoundish && sizeOkay;
+    }catch(e){ return false; }
+  }
+
+  function nukeFloatingBurgers(root=document){
+    const nodes = root.querySelectorAll('button, a, div');
+    nodes.forEach(el=>{
+      if (looksLikeFloatingBurger(el)) {
+        el.remove();
+      }
+    });
+  }
+
+  const boot = () => {
+    // 1) Passe immédiate
+    nukeFloatingBurgers(document);
+
+    // 2) MutationObserver pour les éléments ajoutés après coup
+    const mo = new MutationObserver(muts=>{
+      muts.forEach(m=>{
+        m.addedNodes && m.addedNodes.forEach(n=>{
+          if (n.nodeType===1){
+            nukeFloatingBurgers(n);
+          }
+        });
+      });
+    });
+    mo.observe(document.documentElement, {childList:true, subtree:true});
+
+    // 3) Safety: rescan périodique léger
+    setInterval(()=>nukeFloatingBurgers(document), 1500);
+  };
+
+  if (document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
+  }
+})();
